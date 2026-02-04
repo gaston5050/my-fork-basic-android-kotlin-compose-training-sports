@@ -48,6 +48,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -69,16 +70,26 @@ import com.example.sports.R
 import com.example.sports.data.LocalSportsDataProvider
 import com.example.sports.model.Sport
 import com.example.sports.ui.theme.SportsTheme
+import com.example.sports.utils.SportsScreenSize
 
 /**
  * Main composable that serves as container
  * which displays content according to [uiState] and [windowSize]
  */
 @Composable
-fun SportsApp(
+fun SportsApp( windowSize: WindowSizeClass
 ) {
     val viewModel: SportsViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
+
+    when(windowSize) {
+        SportsScreenSize.Compact -> {}
+        SportsScreenSize.Medium -> {}
+        SportsScreenSize.Expanded -> {}
+
+        else -> {}
+
+    }
 
     Scaffold(
         topBar = {

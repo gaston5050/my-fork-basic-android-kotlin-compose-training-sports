@@ -49,6 +49,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -70,24 +71,35 @@ import com.example.sports.R
 import com.example.sports.data.LocalSportsDataProvider
 import com.example.sports.model.Sport
 import com.example.sports.ui.theme.SportsTheme
-import com.example.sports.utils.SportsScreenSize
+import com.example.sports.utils.SportsContentType
 
 /**
  * Main composable that serves as container
  * which displays content according to [uiState] and [windowSize]
  */
 @Composable
-fun SportsApp( windowSize: WindowSizeClass
+fun SportsApp( windowSize: WindowWidthSizeClass
 ) {
     val viewModel: SportsViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
 
-    when(windowSize) {
-        SportsScreenSize.Compact -> {}
-        SportsScreenSize.Medium -> {}
-        SportsScreenSize.Expanded -> {}
+    //variable de tipo de navegacion
+    val navigationType: SportsContentType
 
-        else -> {}
+    when(windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            navigationType = SportsContentType.ListOnly
+        }
+        WindowWidthSizeClass.Medium -> {
+            navigationType = SportsContentType.ListOnly
+        }
+        WindowWidthSizeClass.Expanded -> {
+            navigationType = SportsContentType.ListAndDetail
+        }
+
+        else -> {
+            navigationType = SportsContentType.ListOnly
+        }
 
     }
 

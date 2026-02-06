@@ -111,33 +111,41 @@ fun SportsApp( windowSize: WindowWidthSizeClass
             )
         }
     ) { innerPadding ->
+
+        Row{
         if (uiState.isShowingListPage) {
             SportsList(
                 sports = uiState.sportsList,
                 onClick = {
                     viewModel.updateCurrentSport(it)
-                    viewModel.navigateToDetailPage()
+                    if(navigationType == SportsContentType.ListOnly){
+                    viewModel.navigateToDetailPage()}
                 },
                 contentPadding = innerPadding,
                 modifier = Modifier
-                    .fillMaxWidth()
+                  //  .fillMaxWidth()
                     .padding(
                         top = dimensionResource(R.dimen.padding_medium),
                         start = dimensionResource(R.dimen.padding_medium),
                         end = dimensionResource(R.dimen.padding_medium),
                     )
             )
-        } else {
-            SportsDetail(
-                selectedSport = uiState.currentSport,
-                contentPadding = innerPadding,
-                onBackPressed = {
-                    viewModel.navigateToListPage()
-                }
-            )
         }
+
+                SportsDetail(
+                    selectedSport = uiState.currentSport,
+                    contentPadding = innerPadding,
+                    onBackPressed = {
+                        viewModel.navigateToListPage()
+                    }
+                )
+
+
+        }
+
     }
 }
+
 
 /**
  * Composable that displays the topBar and displays back button if back navigation is possible.
@@ -178,6 +186,7 @@ fun SportsAppBar(
         modifier = modifier,
     )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

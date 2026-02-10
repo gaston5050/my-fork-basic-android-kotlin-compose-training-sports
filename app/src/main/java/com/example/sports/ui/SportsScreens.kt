@@ -112,26 +112,29 @@ fun SportsApp( windowSize: WindowWidthSizeClass
         }
     ) { innerPadding ->
 
-        Row{
-        if (uiState.isShowingListPage) {
-            SportsList(
-                sports = uiState.sportsList,
-                onClick = {
-                    viewModel.updateCurrentSport(it)
-                    if(navigationType == SportsContentType.ListOnly){
-                    viewModel.navigateToDetailPage()}
-                },
-                contentPadding = innerPadding,
-                modifier = Modifier
-                  //  .fillMaxWidth()
-                    .padding(
-                        top = dimensionResource(R.dimen.padding_medium),
-                        start = dimensionResource(R.dimen.padding_medium),
-                        end = dimensionResource(R.dimen.padding_medium),
-                    )
-            )
-        }
+        Row {
+            if (uiState.isShowingListPage) {
+                SportsList(
+                    sports = uiState.sportsList,
+                    onClick = {
+                        viewModel.updateCurrentSport(it)
+                            if(navigationType == SportsContentType.ListOnly) {
+                                viewModel.navigateToDetailPage()
+                            }
+                    },
+                    contentPadding = innerPadding,
+                    modifier = Modifier
+                        //  .fillMaxWidth()
+                        .padding(
+                            top = dimensionResource(R.dimen.padding_medium),
+                            start = dimensionResource(R.dimen.padding_medium),
+                            end = dimensionResource(R.dimen.padding_medium),
+                        )
+                )
+            }
 
+
+            else {
                 SportsDetail(
                     selectedSport = uiState.currentSport,
                     contentPadding = innerPadding,
@@ -141,8 +144,8 @@ fun SportsApp( windowSize: WindowWidthSizeClass
                 )
 
 
+            }
         }
-
     }
 }
 

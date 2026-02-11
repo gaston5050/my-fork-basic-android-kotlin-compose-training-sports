@@ -112,7 +112,7 @@ fun SportsApp( windowSize: WindowWidthSizeClass
         }
     ) { innerPadding ->
 
-        Row {
+            if(uiState.isShowingListPage && navigationType == SportsContentType.ListOnly) {
             if (uiState.isShowingListPage) {
                 SportsList(
                     sports = uiState.sportsList,
@@ -144,9 +144,60 @@ fun SportsApp( windowSize: WindowWidthSizeClass
                 )
 
 
-            }
+            }}
+        else  {
+            SportListAndDetails(
+                selectedSport = uiState.currentSport,
+                sports = uiState.sportsList,
+                onClick = {
+                    viewModel.updateCurrentSport(it)
+                       // viewModel.navigateToDetailPage()
+
+                },
+                contentPadding = innerPadding,
+                modifier = Modifier
+                    //  .fillMaxWidth()
+                    .padding(
+                        top = dimensionResource(R.dimen.padding_medium),
+                        start = dimensionResource(R.dimen.padding_medium),
+                        end = dimensionResource(R.dimen.padding_medium),
+                    )
+
+
+
+            )
+
         }
+
+
     }
+}
+
+@Composable
+fun SportListAndDetails(selectedSport: Sport,
+                        sports: List<Sport>,
+                        onClick: (Sport) -> Unit,
+                        modifier: Modifier = Modifier,
+                        contentPadding: PaddingValues = PaddingValues(10.dp),) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+
+        SportsList(sports = sports,
+                    onClick = onClick,
+                modifier = Modifier.weight(1f),
+                    contentPadding )
+        Spacer(modifier = Modifier.padding(10.dp))
+
+        SportsDetail(
+            selectedSport,
+            onBackPressed= {},
+        contentPadding = contentPadding,
+        modifier = Modifier.weight(2f)
+        )
+
+
+
+    }
+
 }
 
 
@@ -379,24 +430,53 @@ private fun SportsDetail(
 
 @Preview
 @Composable
-fun SportsListItemPreview() {
-    SportsTheme {
-        SportsListItem(
-            sport = LocalSportsDataProvider.defaultSport,
-            onItemClick = {}
-        )
-    }
+fun listaYdetalles() {
+    val viewModel: SportsViewModel = viewModel()
+    val uiState by viewModel.uiState.collectAsState()
+
+    SportListAndDetails(
+        selectedSport = uiState.currentSport,
+        sports = uiState.sportsList,
+        onClick = {
+            viewModel.updateCurrentSport(it)
+            // viewModel.navigateToDetailPage()
+
+        },
+        contentPadding = PaddingValues(0.dp),
+        modifier = Modifier
+            //  .fillMaxWidth()
+            .padding(
+                top = dimensionResource(R.dimen.padding_medium),
+                start = dimensionResource(R.dimen.padding_medium),
+                end = dimensionResource(R.dimen.padding_medium),
+            )
+
+
+
+
+    )
 }
 
-@Preview
-@Composable
-fun SportsListPreview() {
-    SportsTheme {
-        Surface {
-            SportsList(
-                sports = LocalSportsDataProvider.getSportsData(),
-                onClick = {},
-            )
-        }
-    }
-}
+//@Preview
+//@Composable
+//fun SportsListItemPreview() {
+//    SportsTheme {
+//        SportsListItem(
+//            sport = LocalSportsDataProvider.defaultSport,
+//            onItemClick = {}
+//        )
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun SportsListPreview() {
+//    SportsTheme {
+//        Surface {
+//            SportsList(
+//                sports = LocalSportsDataProvider.getSportsData(),
+//                onClick = {},
+//            )
+//        }
+//    }
+//}

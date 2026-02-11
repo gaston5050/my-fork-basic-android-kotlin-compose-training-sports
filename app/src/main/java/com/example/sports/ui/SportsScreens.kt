@@ -16,6 +16,7 @@
 
 package com.example.sports.ui
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -58,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -112,15 +114,14 @@ fun SportsApp( windowSize: WindowWidthSizeClass
         }
     ) { innerPadding ->
 
-            if(uiState.isShowingListPage && navigationType == SportsContentType.ListOnly) {
+            if(navigationType == SportsContentType.ListOnly) {
             if (uiState.isShowingListPage) {
                 SportsList(
                     sports = uiState.sportsList,
                     onClick = {
                         viewModel.updateCurrentSport(it)
-                            if(navigationType == SportsContentType.ListOnly) {
-                                viewModel.navigateToDetailPage()
-                            }
+                        viewModel.navigateToDetailPage()
+
                     },
                     contentPadding = innerPadding,
                     modifier = Modifier
@@ -145,7 +146,7 @@ fun SportsApp( windowSize: WindowWidthSizeClass
 
 
             }}
-        else  {
+        if(uiState.isShowingListPage && navigationType == SportsContentType.ListAndDetail)  {
             SportListAndDetails(
                 selectedSport = uiState.currentSport,
                 sports = uiState.sportsList,
@@ -179,6 +180,9 @@ fun SportListAndDetails(selectedSport: Sport,
                         onClick: (Sport) -> Unit,
                         modifier: Modifier = Modifier,
                         contentPadding: PaddingValues = PaddingValues(10.dp),) {
+
+
+    val activity = LocalContext.current as Activity
     Row(modifier = Modifier.fillMaxWidth()) {
 
         SportsList(sports = sports,
@@ -189,7 +193,7 @@ fun SportListAndDetails(selectedSport: Sport,
 
         SportsDetail(
             selectedSport,
-            onBackPressed= {},
+            onBackPressed= { activity.finish()   },
         contentPadding = contentPadding,
         modifier = Modifier.weight(2f)
         )
